@@ -1,0 +1,91 @@
+.navigation {
+  width: 350px;
+  min-width: 350px;
+  max-width: 350px;
+  border-right: 3px solid var(--border-color);
+  border-radius: 4px;
+  padding: 20px;
+  overflow-y: auto;
+  .addNewButton {
+    &:hover {
+      opacity: 1;
+      background-color: var(--button-hover) !important;
+    }
+    cursor: pointer;
+    &:not(:first-child) {
+      margin-top: 10px;
+    }
+    color: var(--main-text);
+    background-color: var(--card-background) !important;
+    opacity: 0.65;
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
+    min-height: 60px;
+    width: 100%;
+    border: 1px dashed var(--button-hover);
+    &.light {
+      background: url('../../../styles/icons/plusIconWhite.svg');
+    }
+    &.dark {
+      background: url('../../../styles/icons/plusIconBlack.svg');
+    }
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    background-position: center !important;
+  }
+  .item {
+    position: relative;
+    &:hover {
+      background-color: var(--button-hover);
+      .delete {
+        display: block;
+      }
+    }
+    &:not(:first-child) {
+      margin-top: 10px;
+    }
+    background-color: var(--card-background);
+    border: none;
+    border-radius: 3px;
+    min-height: 60px;
+    width: 100%;
+    height: fit-content;
+    &.itemButton {
+      word-break: break-all;
+      color: var(--main-text) !important;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      padding: 0;
+      margin: 0;
+      background: none;
+      color: white;
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+    }
+    &.delete {
+      z-index: 2;
+      min-height: 0;
+      border-radius: 50%;
+      background-color: var(--dark-gray) !important;
+      position: absolute;
+      padding: 7px;
+      right: 0;
+      bottom: -18px;
+      cursor: pointer;
+      display: none;
+      height: 24px;
+      width: 24px;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      &.light {
+        background: url('../../../styles/icons/deleteIconWhite.svg');
+      }
+      &.dark {
+        background: url('../../../styles/icons/deleteIconWhite.svg');
+      }
+    }
+  }
+}
