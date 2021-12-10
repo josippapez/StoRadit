@@ -1,8 +1,10 @@
+import { ToastContainer } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleTheme } from '../../store/reducers/theme';
 import Input from './Input/Input';
 import Navigation from './Navigation/Navigation';
 import style from './TodoApp.module.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TodoApp = () => {
   const dispatch = useAppDispatch();
@@ -10,7 +12,7 @@ const TodoApp = () => {
 
   return (
     <div className={`App ${theme.theme ? 'darkmode' : 'lightmode'}`}>
-      <div className={style['darkmode-witch']}>
+      <div className={style['darkmode-switch']}>
         <input
           type="checkbox"
           className={style['darkmode-switch__input']}
@@ -30,6 +32,7 @@ const TodoApp = () => {
         <Navigation darkmode={theme.theme} />
         <Input darkTheme={theme.theme} />
       </div>
+      <ToastContainer />
     </div>
   );
 };

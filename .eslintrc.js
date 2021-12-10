@@ -22,6 +22,7 @@ module.exports = {
         },
       },
     ],
+    'react-hooks/exhaustive-deps': 'warn',
   },
   parserOptions: {
     ecmaVersion: 2020,

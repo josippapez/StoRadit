@@ -27,7 +27,7 @@ const Input = (props: Props): JSX.Element | null => {
   const value: { current: undefined | string } = useRef();
 
   useEffect(() => {
-    if (selectedTodo?.id !== todo?.id) {
+    if (selectedTodo) {
       value.current = selectedTodo?.text;
       setTodo(selectedTodo);
     }
@@ -35,7 +35,7 @@ const Input = (props: Props): JSX.Element | null => {
       setTodo(null);
       value.current = ' ';
     }
-  }, [selectedTodo, todo]);
+  }, [selectedTodo]);
 
   const saveTodo = useCallback(() => {
     if (todo) {
@@ -47,7 +47,7 @@ const Input = (props: Props): JSX.Element | null => {
             text: value.current,
           })
         );
-        dispatch(setSelectedTodo(todo));
+        dispatch(setSelectedTodo({ ...todo, text: value.current }));
       } else {
         const newTodo: Todo = {
           date: new Date().toLocaleDateString('hr'),
@@ -69,27 +69,31 @@ const Input = (props: Props): JSX.Element | null => {
   }, [saveTodo, saving]);
 
   useEffect(() => {
-    window.addEventListener('keydown', (event) => {
+    const saveListenerFunction = (event: {
+      key: string;
+      ctrlKey: boolean;
+      preventDefault: () => void;
+    }) => {
       const charCode = event.key.toLowerCase();
       if (event.ctrlKey && charCode === 's') {
         event.preventDefault();
-        if (todo && todo.name && value.current) {
+        if (
+          todo &&
+          todo.name &&
+          value.current &&
+          JSON.stringify({ ...todo, text: value.current }) !==
+            JSON.stringify(selectedTodo)
+        ) {
           setSaving(true);
         }
       }
-    });
-    return () => {
-      window.removeEventListener('keydown', (event) => {
-        const charCode = event.key.toLowerCase();
-        if (event.ctrlKey && charCode === 's') {
-          event.preventDefault();
-          if (todo && todo.name && value.current) {
-            setSaving(true);
-          }
-        }
-      });
     };
-  }, [todo]);
+
+    window.addEventListener('keydown', saveListenerFunction);
+    return () => {
+      window.removeEventListener('keydown', saveListenerFunction);
+    };
+  }, [selectedTodo, todo]);
 
   const setValue = (getValue: () => string) => {
     value.current = getValue();
@@ -105,7 +109,7 @@ const Input = (props: Props): JSX.Element | null => {
           type="text"
           defaultValue={todo?.name}
           onChange={(e) => {
-            setTodo({ ...todo, name: e.target.value });
+            setTodo({ ...todo, text: value.current, name: e.target.value });
           }}
         />
         {value.current &&

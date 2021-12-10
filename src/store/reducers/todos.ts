@@ -1,5 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
+const displaySuccess = () => {
+  toast.success('🤙 Spremljeno!', {
+    theme: 'colored',
+    position: 'bottom-center',
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
+const displayError = () => {
+  toast.error('Obrisano!', {
+    theme: 'colored',
+    position: 'bottom-center',
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
 export interface TodoUpdate {
   id: number;
   name: string;
@@ -45,12 +70,14 @@ export const todosSlice = createSlice({
               : todo
           )
         : null;
+      displaySuccess();
     },
     addTodo: (state, action: PayloadAction<Todo>) => {
       const todos = state.todos && [...state.todos];
       if (todos) {
         state.todos = todos?.concat(action.payload);
       }
+      displaySuccess();
     },
     removeTodo: (state, action: PayloadAction<Todo>) => {
       const todos = state.todos && [...state.todos];
@@ -60,6 +87,7 @@ export const todosSlice = createSlice({
       if (todos) {
         state.todos = todos?.filter((todo) => todo.id !== action.payload.id);
       }
+      displayError();
     },
     setSelectedTodo: (
       state,
