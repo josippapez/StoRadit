@@ -14,7 +14,7 @@ interface Props {
   darkTheme: boolean;
 }
 
-const Input = (props: Props): JSX.Element => {
+const Input = (props: Props): JSX.Element | null => {
   const dispatch = useAppDispatch();
   const { darkTheme } = props;
   const selectedTodo: Todo | Partial<Todo> | null = useAppSelector(
@@ -27,15 +27,12 @@ const Input = (props: Props): JSX.Element => {
   const value: { current: undefined | string } = useRef();
 
   useEffect(() => {
-    const element: any = document.querySelectorAll('.ProseMirror > p');
-    if (element && element.length) {
-      element[element.length - 1].focus();
-    }
     if (selectedTodo?.id !== todo?.id) {
       value.current = selectedTodo?.text;
       setTodo(selectedTodo);
     }
     if (!selectedTodo) {
+      setTodo(null);
       value.current = ' ';
     }
   }, [selectedTodo, todo]);
@@ -76,7 +73,9 @@ const Input = (props: Props): JSX.Element => {
       const charCode = event.key.toLowerCase();
       if (event.ctrlKey && charCode === 's') {
         event.preventDefault();
-        setSaving(true);
+        if (todo && todo.name && value.current) {
+          setSaving(true);
+        }
       }
     });
     return () => {
@@ -84,37 +83,44 @@ const Input = (props: Props): JSX.Element => {
         const charCode = event.key.toLowerCase();
         if (event.ctrlKey && charCode === 's') {
           event.preventDefault();
-          setSaving(true);
+          if (todo && todo.name && value.current) {
+            setSaving(true);
+          }
         }
       });
     };
-  }, []);
+  }, [todo]);
 
   const setValue = (getValue: () => string) => {
     value.current = getValue();
   };
 
   return (
-    <div className={style['markdown-input']}>
-      <input
-        className={style['name-input']}
-        type="text"
-        defaultValue={todo?.name}
-        onChange={(e) => {
-          setTodo({ ...todo, name: e.target.value });
-        }}
-      />
-      {darkTheme ? (
-        <Editor dark value={value.current} autoFocus onChange={setValue} />
-      ) : (
-        <Editor
-          theme={theme}
-          value={value.current}
-          autoFocus
-          onChange={setValue}
+    selectedTodo && (
+      <div className={style['markdown-input']}>
+        <input
+          key={todo?.id}
+          id="nameInput"
+          className={style['name-input']}
+          type="text"
+          defaultValue={todo?.name}
+          onChange={(e) => {
+            setTodo({ ...todo, name: e.target.value });
+          }}
         />
-      )}
-    </div>
+        {value.current &&
+          (darkTheme ? (
+            <Editor dark value={value.current} autoFocus onChange={setValue} />
+          ) : (
+            <Editor
+              theme={theme}
+              value={value.current}
+              autoFocus
+              onChange={setValue}
+            />
+          ))}
+      </div>
+    )
   );
 };
 

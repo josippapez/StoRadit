@@ -15,16 +15,16 @@
   --input-background: #e2e2e2;
 
   .App:is(.lightmode) {
-    -webkit-transition: all 0.2s 0s ease;
-    -moz-transition: all 0.2s 0s ease;
-    -o-transition: all 0.2s 0s ease;
-    transition: all 0.2s 0s ease;
+    -webkit-transition: all 0s 0s ease;
+    -moz-transition: all 0s 0s ease;
+    -o-transition: all 0s 0s ease;
+    transition: all 0s 0s ease;
   }
   .App:is(.darkmode) {
-    -webkit-transition: all 0.2s 0s ease;
-    -moz-transition: all 0.2s 0s ease;
-    -o-transition: all 0.2s 0s ease;
-    transition: all 0.2s 0s ease;
+    -webkit-transition: all 0s 0s ease;
+    -moz-transition: all 0s 0s ease;
+    -o-transition: all 0s 0s ease;
+    transition: all 0s 0s ease;
     /* Darkmode Colors: */
 
     --page-content-background: #131313;
