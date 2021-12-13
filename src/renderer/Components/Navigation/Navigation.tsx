@@ -50,7 +50,7 @@ const Navigation = (props: Props): JSX.Element => {
           <button
             type="button"
             className={`${style.addNewButton} ${
-              theme === 'light' ? style.light : style.dark
+              theme === 'dark' ? style.light : style.dark
             }`}
             key="addNewButton"
             aria-label="Add new button"
