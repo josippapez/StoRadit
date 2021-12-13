@@ -1,5 +1,5 @@
 const colors = {
-  almostBlack: '#181A1B',
+  almostBlack: '#292b2c',
   lightBlack: '#2F3336',
   almostWhite: '#E6E6E6',
   white: '#f3f3f3',
@@ -90,3 +90,61 @@ export const theme = {
   scrollbarBackground: colors.greyLight,
   scrollbarThumb: colors.greyMid,
 };
+
+export const light = {
+  ...base,
+  background: colors.white,
+  text: colors.almostBlack,
+  code: colors.lightBlack,
+  cursor: colors.black,
+  divider: colors.greyMid,
+
+  toolbarBackground: colors.lightBlack,
+  toolbarHoverBackground: colors.black,
+  toolbarInput: colors.white10,
+  toolbarItem: colors.white,
+
+  tableDivider: colors.greyMid,
+  tableSelected: colors.primary,
+  tableSelectedBackground: '#E5F7FF',
+
+  quote: colors.greyDark,
+  codeBackground: colors.greyLight,
+  codeBorder: colors.grey,
+  horizontalRule: colors.greyMid,
+  imageErrorBackground: colors.greyLight,
+
+  scrollbarBackground: colors.greyLight,
+  scrollbarThumb: colors.greyMid,
+};
+
+export const dark = {
+  ...base,
+  background: colors.almostBlack,
+  text: colors.almostWhite,
+  code: colors.almostWhite,
+  cursor: colors.white,
+  divider: '#4E5C6E',
+  placeholder: '#52657A',
+
+  toolbarBackground: colors.white,
+  toolbarHoverBackground: colors.greyMid,
+  toolbarInput: colors.black10,
+  toolbarItem: colors.lightBlack,
+
+  tableDivider: colors.lightBlack,
+  tableSelected: colors.primary,
+  tableSelectedBackground: '#002333',
+
+  quote: colors.greyDark,
+  codeBackground: colors.black,
+  codeBorder: colors.lightBlack,
+  codeString: '#3d8fd1',
+  horizontalRule: colors.lightBlack,
+  imageErrorBackground: 'rgba(0, 0, 0, 0.5)',
+
+  scrollbarBackground: colors.black,
+  scrollbarThumb: colors.lightBlack,
+};
+
+export default light;

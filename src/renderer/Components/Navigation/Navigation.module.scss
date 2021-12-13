@@ -2,28 +2,60 @@
   width: 350px;
   min-width: 350px;
   max-width: 350px;
-  border-right: 3px solid var(--border-color);
   border-radius: 4px;
   padding: 20px;
   overflow-y: auto;
+  background-color: var(--input-background);
+  user-select: none;
+  .topTab {
+    margin-bottom: 10px;
+    .menu {
+      display: flex;
+      width: 100%;
+      text-align: center;
+      color: var(--main-text);
+      font-size: 20px;
+      .active {
+        font-weight: bold;
+      }
+      .menuActive {
+        cursor: pointer;
+        width: 50%;
+        border-bottom: 3px solid transparent;
+        transition: border-bottom 0.25s ease-in-out,
+          font-weight 0.25s ease-in-out;
+        &.active {
+          border-bottom: 3px solid var(--selected-tab);
+        }
+      }
+      .menuDone {
+        cursor: pointer;
+        width: 50%;
+        border-bottom: 3px solid transparent;
+        transition: border-bottom 0.25s ease-in-out,
+          font-weight 0.25s ease-in-out;
+        &.active {
+          border-bottom: 3px solid var(--selected-tab);
+        }
+      }
+    }
+  }
   .addNewButton {
     &:hover {
       opacity: 1;
       background-color: var(--button-hover) !important;
     }
     cursor: pointer;
-    &:not(:first-child) {
-      margin-top: 10px;
-    }
+    margin-top: 10px;
     color: var(--main-text);
     background-color: var(--card-background) !important;
     opacity: 0.65;
     padding: 5px;
     border: none;
-    border-radius: 3px;
+    border-radius: 6px;
     min-height: 60px;
     width: 100%;
-    border: 1px dashed var(--button-hover);
+    border: 3px dashed var(--button-hover);
     &.light {
       background: url('../../../styles/icons/plusIconWhite.svg');
     }
@@ -34,57 +66,95 @@
     background-size: contain !important;
     background-position: center !important;
   }
-  .item {
-    position: relative;
-    &:hover {
-      background-color: var(--button-hover);
-      .delete {
-        display: block;
+  .list {
+    .item {
+      position: relative;
+      &:hover {
+        background-color: var(--button-hover);
+        .delete {
+          display: block;
+        }
+        .markAsDone {
+          display: block;
+        }
+        .markAsNotDone {
+          display: block;
+        }
       }
-    }
-    &:not(:first-child) {
-      margin-top: 10px;
-    }
-    background-color: var(--card-background);
-    border: none;
-    border-radius: 3px;
-    min-height: 60px;
-    width: 100%;
-    height: fit-content;
-    &.itemButton {
-      word-break: break-all;
-      color: var(--main-text) !important;
-      cursor: pointer;
+      &:not(:first-child) {
+        margin-top: 10px;
+      }
+      background-color: var(--card-background);
       border: none;
-      outline: none;
-      padding: 0;
-      margin: 0;
-      background: none;
-      color: white;
+      border-radius: 6px;
+      min-height: 60px;
       width: 100%;
-      padding: 10px;
-      font-size: 18px;
-    }
-    &.delete {
-      z-index: 2;
-      min-height: 0;
-      border-radius: 50%;
-      background-color: var(--dark-gray) !important;
-      position: absolute;
-      padding: 7px;
-      right: 0;
-      bottom: -18px;
-      cursor: pointer;
-      display: none;
-      height: 24px;
-      width: 24px;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      &.light {
-        background: url('../../../styles/icons/deleteIconWhite.svg');
+      height: fit-content;
+      &.itemButton {
+        word-break: break-all;
+        color: var(--main-text) !important;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        background: none;
+        color: white;
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        &.active {
+          background-color: var(--button-hover);
+        }
       }
-      &.dark {
-        background: url('../../../styles/icons/deleteIconWhite.svg');
+      &.delete,
+      &.markAsDone,
+      &.markAsNotDone {
+        z-index: 2;
+        min-height: 0;
+        border-radius: 50%;
+        background-color: var(--dark-gray) !important;
+        position: absolute;
+        padding: 7px;
+        bottom: -18px;
+        cursor: pointer;
+        display: none;
+        height: 24px;
+        width: 24px;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: 24px !important;
+      }
+      &.delete {
+        right: 0;
+        &.light {
+          background: url('../../../styles/icons/deleteIconWhite.svg');
+        }
+        &.dark {
+          background: url('../../../styles/icons/deleteIconWhite.svg');
+        }
+      }
+      &.markAsDone {
+        right: 50px;
+
+        background-color: var(--success-text) !important;
+        &.light {
+          background: url('../../../styles/icons/checkMarkWhite.svg');
+        }
+        &.dark {
+          background: url('../../../styles/icons/checkMarkWhite.svg');
+        }
+      }
+      &.markAsNotDone {
+        right: 50px;
+        background-color: var(--alert-text) !important;
+
+        &.light {
+          background: url('../../../styles/icons/xMarkWhite.svg');
+        }
+        &.dark {
+          background: url('../../../styles/icons/xMarkWhite.svg');
+        }
       }
     }
   }

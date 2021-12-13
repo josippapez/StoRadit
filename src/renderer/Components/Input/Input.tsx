@@ -7,16 +7,16 @@ import {
   Todo,
   updateTodo,
 } from '../../../store/reducers/todos';
-import { theme } from './EditorTheme';
+import { light, dark } from './EditorTheme';
 import style from './Input.module.scss';
 
 interface Props {
-  darkTheme: boolean;
+  theme: string;
 }
 
 const Input = (props: Props): JSX.Element | null => {
   const dispatch = useAppDispatch();
-  const { darkTheme } = props;
+  const { theme } = props;
   const selectedTodo: Todo | Partial<Todo> | null = useAppSelector(
     (state) => state.todos.selectedTodo
   );
@@ -113,11 +113,16 @@ const Input = (props: Props): JSX.Element | null => {
           }}
         />
         {value.current &&
-          (darkTheme ? (
-            <Editor dark value={value.current} autoFocus onChange={setValue} />
+          (theme === 'dark' ? (
+            <Editor
+              theme={dark}
+              value={value.current}
+              autoFocus
+              onChange={setValue}
+            />
           ) : (
             <Editor
-              theme={theme}
+              theme={light}
               value={value.current}
               autoFocus
               onChange={setValue}

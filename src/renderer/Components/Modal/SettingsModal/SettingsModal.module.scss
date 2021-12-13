@@ -1,0 +1,58 @@
+.settingsModal {
+  height: calc(100vh - 40px);
+  width: 45%;
+  float: right;
+  background-color: var(--page-content-background);
+  color: var(--main-text);
+  padding: 20px;
+  .title {
+    font-size: 35px;
+    font-weight: bold;
+  }
+  .mainText {
+    font-size: 18px;
+    text-align: center;
+  }
+  .settingsBody {
+    margin-top: 20px;
+    font-size: 20px;
+    .categoryTitle {
+      font-size: 25px;
+      margin-bottom: 20px;
+    }
+    .settingsTheme {
+      .settingsThemeBackground {
+        background-color: var(--border-color);
+        border-radius: 7px;
+        padding: 20px;
+        display: grid;
+        gap: 45px;
+        grid-template-columns: repeat(auto-fill, 150px);
+      }
+
+      &.darkTheme,
+      &.lightTheme {
+        cursor: pointer;
+      }
+
+      &.darkTheme {
+        background: none;
+        border: none;
+        background-image: url('../../../../styles/icons/dark_theme.svg');
+        width: 150px;
+        height: 80px;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+      }
+      &.lightTheme {
+        background: none;
+        border: none;
+        background-image: url('../../../../styles/icons/light_theme.svg');
+        width: 150px;
+        height: 80px;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+      }
+    }
+  }
+}

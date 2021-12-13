@@ -1,36 +1,39 @@
+import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { toggleTheme } from '../../store/reducers/theme';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAppSelector } from '../../store/hooks';
 import Input from './Input/Input';
+import { SettingsModal } from './Modal/SettingsModal/SettingsModal';
 import Navigation from './Navigation/Navigation';
 import style from './TodoApp.module.scss';
-import 'react-toastify/dist/ReactToastify.css';
 
 const TodoApp = () => {
-  const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme);
-
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   return (
-    <div className={`App ${theme.theme ? 'darkmode' : 'lightmode'}`}>
-      <div className={style['darkmode-switch']}>
-        <input
-          type="checkbox"
-          className={style['darkmode-switch__input']}
-          id="Switch"
-          readOnly
-          checked={!theme.theme}
-          onClick={() => {
-            dispatch(toggleTheme());
+    <div
+      id="App"
+      className={`App ${theme.theme === 'dark' ? 'darkmode' : 'lightmode'}`}
+    >
+      <button
+        aria-hidden="true"
+        type="button"
+        className={`${style.settingsButton} ${
+          theme.theme === 'dark' ? style.dark : style.light
+        }`}
+        onClick={() => {
+          setShowSettingsModal(true);
+        }}
+      />
+      <div className={style['todo-app']}>
+        <Navigation theme={theme.theme} />
+        <Input theme={theme.theme} />
+        <SettingsModal
+          show={showSettingsModal}
+          closeModal={() => {
+            setShowSettingsModal(false);
           }}
         />
-        <label className={style['darkmode-switch__label']} htmlFor="Switch">
-          <span className={style['darkmode-switch__indicator']} />
-          <span className={style['darkmode-switch__decoration']} />
-        </label>
-      </div>
-      <div className={style['todo-app']}>
-        <Navigation darkmode={theme.theme} />
-        <Input darkTheme={theme.theme} />
       </div>
       <ToastContainer />
     </div>
