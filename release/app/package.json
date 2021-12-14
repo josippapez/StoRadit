@@ -1,6 +1,6 @@
 {
   "name": "sto-radit",
-  "version": "4.4.0",
+  "version": "1.1.1",
   "description": "Minimal Todo list",
   "main": "./dist/main/main.js",
   "author": {

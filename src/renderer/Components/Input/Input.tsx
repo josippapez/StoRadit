@@ -7,7 +7,7 @@ import {
   Todo,
   updateTodo,
 } from '../../../store/reducers/todos';
-import { light, dark } from './EditorTheme';
+import { dark, light } from './EditorTheme';
 import style from './Input.module.scss';
 
 interface Props {
@@ -101,9 +101,8 @@ const Input = (props: Props): JSX.Element | null => {
 
   return (
     selectedTodo && (
-      <div className={style['markdown-input']}>
+      <div className={style['markdown-input']} key={todo?.id}>
         <input
-          key={todo?.id}
           id="nameInput"
           className={style['name-input']}
           type="text"
