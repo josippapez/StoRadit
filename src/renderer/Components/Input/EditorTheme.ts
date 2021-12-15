@@ -147,4 +147,10 @@ export const dark = {
   scrollbarThumb: colors.lightBlack,
 };
 
+export const color1 = {
+  ...light,
+  background: '#001219',
+  text: colors.white,
+};
+
 export default light;

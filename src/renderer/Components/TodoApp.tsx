@@ -10,10 +10,20 @@ import style from './TodoApp.module.scss';
 const TodoApp = () => {
   const theme = useAppSelector((state) => state.theme);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+  electron.scheduleAPI.schedule();
+
   return (
     <div
       id="App"
-      className={`App ${theme.theme === 'dark' ? 'darkmode' : 'lightmode'}`}
+      className={`App ${
+        // eslint-disable-next-line no-nested-ternary
+        theme.theme === 'dark'
+          ? 'darkmode'
+          : theme.theme === 'light'
+          ? 'lightmode'
+          : 'color1'
+      }`}
     >
       <button
         aria-hidden="true"

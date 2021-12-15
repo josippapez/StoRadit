@@ -1,5 +1,9 @@
 import { useAppDispatch } from '../../../../store/hooks';
-import { darkTheme, lightTheme } from '../../../../store/reducers/theme';
+import {
+  color1,
+  darkTheme,
+  lightTheme,
+} from '../../../../store/reducers/theme';
 import Modal from '../Modal';
 import style from './SettingsModal.module.scss';
 
@@ -46,6 +50,17 @@ export const SettingsModal = (props: Props) => {
                   }}
                 />
                 <div className={style.mainText}>Tamni način</div>
+              </div>
+              <div>
+                <button
+                  className={`${style.settingsTheme} ${style.color1}`}
+                  aria-hidden="true"
+                  type="button"
+                  onClick={() => {
+                    dispatch(color1());
+                  }}
+                />
+                <div className={style.mainText}>Boja 1</div>
               </div>
             </div>
           </div>

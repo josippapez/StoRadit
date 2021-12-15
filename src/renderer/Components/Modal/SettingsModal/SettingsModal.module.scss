@@ -2,8 +2,8 @@
   height: calc(100vh - 40px);
   width: 45%;
   float: right;
-  background-color: var(--page-content-background);
-  color: var(--main-text);
+  background-color: var(--settings-background);
+  color: var(--settings-text);
   padding: 20px;
   .title {
     font-size: 35px;
@@ -22,7 +22,7 @@
     }
     .settingsTheme {
       .settingsThemeBackground {
-        background-color: var(--border-color);
+        background-color: var(--settings-category-background);
         border-radius: 7px;
         padding: 20px;
         display: grid;
@@ -31,27 +31,25 @@
       }
 
       &.darkTheme,
-      &.lightTheme {
+      &.lightTheme,
+      &.color1 {
         cursor: pointer;
+        background: none;
+        border: none;
+        width: 150px;
+        height: 80px;
+        background-repeat: no-repeat;
+        border-radius: 10px;
       }
 
       &.darkTheme {
-        background: none;
-        border: none;
-        background-image: url('../../../../styles/icons/dark_theme.svg');
-        width: 150px;
-        height: 80px;
-        background-repeat: no-repeat;
-        border-radius: 10px;
+        background-image: url('../../../../styles/icons/themes/dark_theme.svg');
       }
       &.lightTheme {
-        background: none;
-        border: none;
-        background-image: url('../../../../styles/icons/light_theme.svg');
-        width: 150px;
-        height: 80px;
-        background-repeat: no-repeat;
-        border-radius: 10px;
+        background-image: url('../../../../styles/icons/themes/light_theme.svg');
+      }
+      &.color1 {
+        background-image: url('../../../../styles/icons/themes/color1_theme.svg');
       }
     }
   }

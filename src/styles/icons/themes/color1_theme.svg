@@ -1,0 +1,25 @@
+<svg width="150" height="80" xmlns="http://www.w3.org/2000/svg">
+  <title>Dark theme</title>
+  <g>
+    <title>Layer 1</title>
+    <rect stroke="#000" id="svg_17" height="79.40299" width="149.25373" y="0.29851" x="0.07463" stroke-width="0"
+      fill="#000814" />
+    <g id="svg_16">
+      <rect rx="5" id="svg_15" height="63.8806" width="37.91045" y="6.1194" x="6.34328" stroke-width="0" stroke="#000"
+        fill="#001d3d" />
+      <rect rx="5" id="svg_13" height="59.10448" width="89.25373" y="9.10448" x="52.91045" stroke-width="0"
+        stroke="#000" fill="#001d3d" />
+    </g>
+    <rect rx="1" stroke="#000" id="svg_7" height="3.28358" width="27.16418" y="21.64179" x="11.71642" stroke-width="0"
+      fill="#003566" />
+    <rect rx="1" stroke="#000" id="svg_10" height="3.28358" width="27.16418" y="28.50746" x="11.71642" stroke-width="0"
+      fill="#003566" />
+    <rect rx="1" stroke="#000" id="svg_11" height="3.28358" width="27.16418" y="35.67164" x="11.41791" stroke-width="0"
+      fill="#003566" />
+    <rect rx="1" stroke="#000" id="svg_12" height="3.28358" width="27.16418" y="43.43284" x="11.71642" stroke-width="0"
+      fill="#003566" />
+    <text xml:space="preserve" text-anchor="start" font-family="sans-serif" font-size="25" id="svg_3" y="45" x="65"
+      stroke-width="0" stroke="#000" fill="#ffd60a">Abcd.</text>
+  </g>
+
+</svg>

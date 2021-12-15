@@ -55,13 +55,6 @@ export interface TodoUpdate {
   text: string;
 }
 
-export interface NewTodo {
-  id?: number | null;
-  name: string;
-  date: string;
-  text?: string;
-}
-
 export interface Todo {
   id: number;
   name: string;

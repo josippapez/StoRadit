@@ -7,7 +7,7 @@ import {
   Todo,
   updateTodo,
 } from '../../../store/reducers/todos';
-import { dark, light } from './EditorTheme';
+import { color1, dark, light } from './EditorTheme';
 import style from './Input.module.scss';
 
 interface Props {
@@ -25,6 +25,7 @@ const Input = (props: Props): JSX.Element | null => {
   const [todo, setTodo] = useState<Todo | Partial<Todo> | null>(null);
 
   const value: { current: undefined | string } = useRef();
+  const dateTime: { current: any } = useRef();
 
   useEffect(() => {
     if (selectedTodo) {
@@ -103,6 +104,18 @@ const Input = (props: Props): JSX.Element | null => {
     selectedTodo && (
       <div className={style['markdown-input']} key={todo?.id}>
         <input
+          type="datetime-local"
+          name="schedule"
+          id="schedule"
+          value={dateTime.current}
+          onChange={(e) => {
+            dateTime.current = new Date(e.target.value);
+          }}
+        />
+        <button type="button" aria-label="hidden" onClick={() => {}}>
+          Save
+        </button>
+        <input
           id="nameInput"
           className={style['name-input']}
           type="text"
@@ -111,22 +124,15 @@ const Input = (props: Props): JSX.Element | null => {
             setTodo({ ...todo, text: value.current, name: e.target.value });
           }}
         />
-        {value.current &&
-          (theme === 'dark' ? (
-            <Editor
-              theme={dark}
-              value={value.current}
-              autoFocus
-              onChange={setValue}
-            />
-          ) : (
-            <Editor
-              theme={light}
-              value={value.current}
-              autoFocus
-              onChange={setValue}
-            />
-          ))}
+        {value.current && (
+          <Editor
+            // eslint-disable-next-line no-nested-ternary
+            theme={theme === 'dark' ? dark : theme === 'light' ? light : color1}
+            value={value.current}
+            autoFocus
+            onChange={setValue}
+          />
+        )}
       </div>
     )
   );

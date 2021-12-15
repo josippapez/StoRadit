@@ -1,19 +1,31 @@
 :root {
+  --selected-tab: #ad6e1c;
+  --card-background: #ffffff;
+
+  --white: #ffffff;
+
+  //alerts
   --success-text: #21ba45;
   --unnamed-color-f05a5c: #f05a5c;
   --alert-text: #db2828;
   --dark-gray: #1b1b1b;
 
-  --selected-tab: #ad6e1c;
-
+  //main page
   --border-color: #e2e2e3;
   --main-text: #000000cc;
-  --white: #ffffff;
-
   --button-hover: #c7c7c7;
-  --settings-button: #4e4e4e;
   --page-content-background: #ffffff;
-  --card-background: #ffffff;
+
+  //navigation
+  --navigation-background: var(--input-background);
+
+  //settings
+  --settings-button: #4e4e4e;
+  --settings-text: #000000cc;
+  --settings-background: #ffffff;
+  --settings-category-background: #c7c7c7;
+
+  //inputs
   --input-background: #e2e2e2;
 
   .App:is(.lightmode) {
@@ -29,14 +41,51 @@
     transition: all 0s 0s ease;
     /* Darkmode Colors: */
 
-    --page-content-background: #1a1a1a;
-
-    --border-color: #3b3b3b;
     --card-background: #212121;
 
+    //main page
     --main-text: #ffffff;
     --button-hover: #444444;
+    --page-content-background: #1a1a1a;
+    --border-color: #3b3b3b;
+
+    //navigation
+    --navigation-background: var(--input-background);
+
+    //settings
     --settings-button: #949494;
+    --settings-text: white;
+    --settings-background: #1a1a1a;
+    --settings-category-background: #3b3b3b;
+
+    //inputs
     --input-background: #313131;
+  }
+
+  .App:is(.color1) {
+    -webkit-transition: all 0s 0s ease;
+    -moz-transition: all 0s 0s ease;
+    -o-transition: all 0s 0s ease;
+    transition: all 0s 0s ease;
+    /* Darkmode-color Colors: */
+    --card-background: #003566;
+
+    //main page
+    --border-color: #e2e2e3;
+    --main-text: #ffd60a;
+    --button-hover: #000814;
+    --page-content-background: #000814;
+
+    //navigation
+    --navigation-background: #001d3d;
+
+    //settings
+    --settings-button: #4e4e4e;
+    --settings-text: #000000;
+    --settings-background: #ffc300;
+    --settings-category-background: #c7c7c7;
+
+    //inputs
+    --input-background: #003566;
   }
 }
