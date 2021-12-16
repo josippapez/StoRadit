@@ -11,8 +11,6 @@ const TodoApp = () => {
   const theme = useAppSelector((state) => state.theme);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
-  electron.scheduleAPI.schedule();
-
   return (
     <div
       id="App"

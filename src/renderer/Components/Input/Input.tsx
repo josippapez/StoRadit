@@ -1,4 +1,7 @@
+import moment from 'moment';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Datetime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 import Editor from 'rich-markdown-editor';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
@@ -25,7 +28,7 @@ const Input = (props: Props): JSX.Element | null => {
   const [todo, setTodo] = useState<Todo | Partial<Todo> | null>(null);
 
   const value: { current: undefined | string } = useRef();
-  const dateTime: { current: any } = useRef();
+  const dateTime: { current: Date | undefined } = useRef(new Date());
 
   useEffect(() => {
     if (selectedTodo) {
@@ -103,16 +106,24 @@ const Input = (props: Props): JSX.Element | null => {
   return (
     selectedTodo && (
       <div className={style['markdown-input']} key={todo?.id}>
-        <input
-          type="datetime-local"
-          name="schedule"
-          id="schedule"
-          value={dateTime.current}
+        <Datetime
+          locale="hr"
+          initialValue={dateTime.current}
           onChange={(e) => {
-            dateTime.current = new Date(e.target.value);
+            dateTime.current = e.format();
           }}
+          dateFormat="DD.MM.yyyy."
+          timeFormat="hh:mm"
         />
-        <button type="button" aria-label="hidden" onClick={() => {}}>
+        <button
+          type="button"
+          aria-label="hidden"
+          onClick={() => {
+            if (dateTime.current) {
+              electron.scheduleAPI.schedule(dateTime.current.toString());
+            }
+          }}
+        >
           Save
         </button>
         <input

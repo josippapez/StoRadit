@@ -14,7 +14,7 @@ declare global {
       takeScreenshot(): void;
     };
     scheduleAPI: {
-      schedule(): void;
+      schedule(time: string): void;
     };
   };
 }

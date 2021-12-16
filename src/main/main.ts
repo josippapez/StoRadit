@@ -18,6 +18,9 @@ import {
   ipcMain,
   Notification,
   clipboard,
+  Tray,
+  Menu,
+  NativeImage,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -33,15 +36,18 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-let icon: string | undefined = '';
+let icon: string | NativeImage = '';
+let tray: Tray;
 
 ipcMain.on('schedule', () => {
-  const notification = new Notification({
-    title: 'StoRadit',
-    body: 'Your job is scheduled!',
-    icon,
-  });
-  notification.show();
+  if (Notification.isSupported()) {
+    const notification = new Notification({
+      title: 'StoRadit',
+      body: 'Your job is scheduled!',
+      icon,
+    });
+    notification.show();
+  }
 });
 
 ipcMain.on('ipc-example', async (event, arg) => {
@@ -122,10 +128,40 @@ const createWindow = async () => {
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
+  mainWindow.on('minimize', function (event: { preventDefault: () => void }) {
+    event.preventDefault();
+    mainWindow?.hide();
+  });
+
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
+    if (!tray) {
+      tray = new Tray(getAssetPath('/icons/16x16.png'));
+    }
+    tray.setContextMenu(
+      Menu.buildFromTemplate([
+        {
+          label: 'Show App',
+          click() {
+            mainWindow?.show();
+          },
+        },
+        {
+          label: 'Quit',
+          click() {
+            mainWindow?.destroy();
+            app.quit();
+          },
+        },
+      ])
+    );
+    tray.setToolTip('StoRadit');
+    tray.on('double-click', () => {
+      mainWindow?.show();
+    });
+
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
@@ -134,8 +170,17 @@ const createWindow = async () => {
   });
 
   mainWindow.webContents.session.clearCache();
+
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+  mainWindow.on('minimize', function (event: { preventDefault: () => void }) {
+    event.preventDefault();
+    mainWindow?.hide();
+  });
+  mainWindow.on('close', function (event) {
+    event.preventDefault();
+    mainWindow?.hide();
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
