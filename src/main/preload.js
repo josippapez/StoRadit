@@ -32,9 +32,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
   },
   scheduleAPI: {
-    schedule(time) {
+    schedule(time, todo) {
       schedule.scheduleJob(time, () => {
-        ipcRenderer.send('schedule');
+        ipcRenderer.send('schedule', todo.name);
       });
     },
   },

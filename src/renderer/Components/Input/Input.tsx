@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
@@ -25,10 +24,16 @@ const Input = (props: Props): JSX.Element | null => {
   );
 
   const [saving, setSaving] = useState(false);
+  const [showScheduling, setShowScheduling] = useState(false);
   const [todo, setTodo] = useState<Todo | Partial<Todo> | null>(null);
 
   const value: { current: undefined | string } = useRef();
-  const dateTime: { current: Date | undefined } = useRef(new Date());
+  const dateTime: { current: string | undefined } = useRef(
+    new Date().toLocaleString('hr-HR', {
+      timeStyle: 'short',
+      dateStyle: 'short',
+    })
+  );
 
   useEffect(() => {
     if (selectedTodo) {
@@ -95,6 +100,7 @@ const Input = (props: Props): JSX.Element | null => {
 
     window.addEventListener('keydown', saveListenerFunction);
     return () => {
+      setShowScheduling(false);
       window.removeEventListener('keydown', saveListenerFunction);
     };
   }, [selectedTodo, todo]);
@@ -106,26 +112,6 @@ const Input = (props: Props): JSX.Element | null => {
   return (
     selectedTodo && (
       <div className={style['markdown-input']} key={todo?.id}>
-        <Datetime
-          locale="hr"
-          initialValue={dateTime.current}
-          onChange={(e) => {
-            dateTime.current = e.format();
-          }}
-          dateFormat="DD.MM.yyyy."
-          timeFormat="hh:mm"
-        />
-        <button
-          type="button"
-          aria-label="hidden"
-          onClick={() => {
-            if (dateTime.current) {
-              electron.scheduleAPI.schedule(dateTime.current.toString());
-            }
-          }}
-        >
-          Save
-        </button>
         <input
           id="nameInput"
           className={style['name-input']}
@@ -135,6 +121,46 @@ const Input = (props: Props): JSX.Element | null => {
             setTodo({ ...todo, text: value.current, name: e.target.value });
           }}
         />
+        <div className={style.schedule}>
+          {!showScheduling && (
+            <button
+              type="button"
+              className={style['schedule-button']}
+              onClick={() => setShowScheduling(true)}
+            >
+              Dodaj rok završetka
+            </button>
+          )}
+          {showScheduling && (
+            <>
+              <Datetime
+                className={style['schedule-input']}
+                locale="hr"
+                initialValue={new Date()}
+                onChange={(e) => {
+                  dateTime.current = e.toString();
+                }}
+                dateFormat="DD.MM.yyyy."
+                timeFormat="hh:mm"
+              />
+              <button
+                className={style['schedule-button']}
+                type="button"
+                aria-label="hidden"
+                onClick={() => {
+                  if (dateTime.current) {
+                    electron.scheduleAPI.schedule(
+                      dateTime.current.toString(),
+                      todo
+                    );
+                  }
+                }}
+              >
+                Save
+              </button>
+            </>
+          )}
+        </div>
         {value.current && (
           <Editor
             // eslint-disable-next-line no-nested-ternary

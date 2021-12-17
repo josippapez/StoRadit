@@ -39,11 +39,11 @@ let mainWindow: BrowserWindow | null = null;
 let icon: string | NativeImage = '';
 let tray: Tray;
 
-ipcMain.on('schedule', () => {
+ipcMain.on('schedule', (_, name) => {
   if (Notification.isSupported()) {
     const notification = new Notification({
       title: 'StoRadit',
-      body: 'Your job is scheduled!',
+      body: `Rok zapisa naziva ${name} je istekao.`,
       icon,
     });
     notification.show();
@@ -119,7 +119,9 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
+    minHeight: 500,
     height: 728,
+    minWidth: 700,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
