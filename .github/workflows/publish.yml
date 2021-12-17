@@ -43,7 +43,6 @@ jobs:
           npm run postinstall
           npm run build
           npm exec electron-builder -- --publish always --linux
-
   publish-win:
     # To enable auto publishing to github, update your electron publisher
     # config in package.json > "build" and remove the conditional below
@@ -51,7 +50,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-     strategy:
+    strategy:
       matrix:
         os: [windows-latest]
 
