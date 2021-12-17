@@ -30,9 +30,8 @@ jobs:
         run: |
           npm install
 
-      if: ${{ matrix.os == 'ubuntu-latest' }}
-
-      - name: Publish releases
+      - name: Publish releases ubuntu
+        if: matrix.os == 'ubuntu-latest'
         env:
           # These values are used for auto updates signing
           # APPLE_ID: ${{ secrets.APPLE_ID }}
@@ -46,9 +45,8 @@ jobs:
           npm run build
           npm exec electron-builder -- --publish always --linux
 
-      if: ${{ matrix.os == 'windows-latest' }}
-
-       - name: Publish releases
+      - name: Publish releases windows
+        if: matrix.os == 'windows-latest'
         env:
           # These values are used for auto updates signing
           # APPLE_ID: ${{ secrets.APPLE_ID }}
