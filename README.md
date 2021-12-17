@@ -1,3 +1,3 @@
 ## StoRadit
 
-Minimalistic Todo List
+Minimalistic Todo List / Notes taking app

@@ -89,7 +89,7 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "StoRadit",
+      "owner": "josippapez",
       "repo": "StoRadit"
     }
   },
