@@ -2,6 +2,14 @@ const { contextBridge, ipcRenderer } = require('electron');
 const schedule = require('node-schedule');
 
 contextBridge.exposeInMainWorld('electron', {
+  updateApi: {
+    checkForUpdate: () => {
+      ipcRenderer.send('checkForUpdate');
+    },
+    restartAndUpdate: () => {
+      ipcRenderer.send('restart_app');
+    },
+  },
   ipcRenderer: {
     myPing() {
       ipcRenderer.send('ipc-example', 'ping');

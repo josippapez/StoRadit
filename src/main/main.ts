@@ -56,15 +56,8 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
-ipcMain.on('notify', (_, message) => {
-  if (Notification.isSupported()) {
-    new Notification({
-      icon,
-      subtitle: 'aaaaaaaa',
-      title: 'Notification',
-      body: message,
-    }).show();
-  }
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
 });
 
 ipcMain.on('takeScreenshot', () => {
@@ -130,7 +123,7 @@ const createWindow = async () => {
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
-  mainWindow.on('minimize', function (event: { preventDefault: () => void }) {
+  mainWindow.on('minimize', (event: { preventDefault: () => void }) => {
     event.preventDefault();
     mainWindow?.hide();
   });
@@ -176,11 +169,11 @@ const createWindow = async () => {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-  mainWindow.on('minimize', function (event: { preventDefault: () => void }) {
+  mainWindow.on('minimize', (event: { preventDefault: () => void }) => {
     event.preventDefault();
     mainWindow?.hide();
   });
-  mainWindow.on('close', function (event) {
+  mainWindow.on('close', (event) => {
     event.preventDefault();
     mainWindow?.hide();
   });
@@ -222,3 +215,10 @@ app
     });
   })
   .catch(console.log);
+
+autoUpdater.on('update-available', () => {
+  mainWindow?.webContents.send('update_available');
+});
+autoUpdater.on('update-downloaded', () => {
+  mainWindow?.webContents.send('update_downloaded');
+});

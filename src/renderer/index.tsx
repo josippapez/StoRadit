@@ -8,6 +8,10 @@ import App from './App';
 
 declare global {
   const electron: {
+    updateApi: {
+      checkForUpdate: () => void;
+      restartAndUpdate: () => void;
+    };
     notificationApi: {
       sendNotification(message: string): void;
     };
