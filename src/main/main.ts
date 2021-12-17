@@ -50,9 +50,12 @@ ipcMain.on('schedule', (_, name) => {
   }
 });
 
+ipcMain.on('app-version', (event) => {
+  event.reply('app-version', { version: app.getVersion() });
+});
+
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
@@ -215,10 +218,3 @@ app
     });
   })
   .catch(console.log);
-
-autoUpdater.on('update-available', () => {
-  mainWindow?.webContents.send('update_available');
-});
-autoUpdater.on('update-downloaded', () => {
-  mainWindow?.webContents.send('update_downloaded');
-});

@@ -2,27 +2,22 @@ const { contextBridge, ipcRenderer } = require('electron');
 const schedule = require('node-schedule');
 
 contextBridge.exposeInMainWorld('electron', {
-  updateApi: {
-    checkForUpdate: () => {
-      ipcRenderer.send('checkForUpdate');
-    },
-    restartAndUpdate: () => {
-      ipcRenderer.send('restart_app');
-    },
-  },
   ipcRenderer: {
+    checkVersion() {
+      ipcRenderer.send('app-version');
+    },
     myPing() {
       ipcRenderer.send('ipc-example', 'ping');
     },
     on(channel, func) {
-      const validChannels = ['ipc-example'];
+      const validChannels = ['ipc-example', 'app-version'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.on(channel, (event, ...args) => func(...args));
       }
     },
     once(channel, func) {
-      const validChannels = ['ipc-example'];
+      const validChannels = ['ipc-example', 'app-version'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.once(channel, (event, ...args) => func(...args));

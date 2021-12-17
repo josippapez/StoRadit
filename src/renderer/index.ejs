@@ -12,24 +12,12 @@
       // eslint-disable-next-line no-console
       console.log(arg);
     });
+    window.electron.ipcRenderer.once('app-version', (arg) => {
+      // eslint-disable-next-line no-console
+      console.log(arg.version);
+    });
 
     window.electron.ipcRenderer.myPing();
-
-    const notification = document.getElementById('notification');
-    const message = document.getElementById('message');
-    const restartButton = document.getElementById('restart-button');
-
-    window.electron.ipcRenderer.on('update_available', () => {
-      window.electron.ipcRenderer.removeAllListeners('update_available');
-      message.innerText = 'A new update is available. Downloading now...';
-      notification.classList.remove('hidden');
-    });
-    window.electron.ipcRenderer.on('update_downloaded', () => {
-      window.electron.ipcRenderer.removeAllListeners('update_downloaded');
-      message.innerText =
-        'Update Downloaded. It will be installed on restart. Restart now?';
-      restartButton.classList.remove('hidden');
-      notification.classList.remove('hidden');
-    });
+    window.electron.ipcRenderer.checkVersion();
   </script>
 </html>
