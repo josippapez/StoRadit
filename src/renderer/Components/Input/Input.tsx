@@ -122,7 +122,7 @@ const Input = (props: Props): JSX.Element | null => {
           }}
         />
         <div className={style.schedule}>
-          {!showScheduling && (
+          {!showScheduling && selectedTodo.id && (
             <button
               type="button"
               className={style['schedule-button']}

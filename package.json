@@ -76,8 +76,7 @@
     "linux": {
       "target": [
         "deb"
-      ],
-      "category": "Development"
+      ]
     },
     "directories": {
       "app": "release/app",
