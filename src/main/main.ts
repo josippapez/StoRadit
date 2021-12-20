@@ -31,7 +31,9 @@ export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
+    console.log('oaskdoaskdo');
     autoUpdater.checkForUpdatesAndNotify();
+    console.log('aaaaaaaaaaaaaaa');
   }
 }
 
@@ -223,34 +225,26 @@ app
 
 autoUpdater.on('checking-for-update', () => {
   console.log('Checking for update...');
-  alert('Checking for update...');
 });
 autoUpdater.on('update-available', (ev, info) => {
   console.log('Update available.');
-  alert('Update available.');
 });
 autoUpdater.on('update-not-available', (ev, info) => {
   console.log('Update not available.');
-  alert('Update not available.');
 });
 autoUpdater.on('error', (ev, err) => {
   console.error('Error in auto updater.');
-  alert('Error in auto updater.');
 });
 autoUpdater.on('download-progress', (ev, progressObj) => {
   console.log('Download progress...', progressObj);
-  ž;
-  alert('Download progress...');
 });
 autoUpdater.on('update-downloaded', (ev, info) => {
   console.log('Update downloaded; will install in 5 seconds');
-  alert('Update downloaded; will install in 5 seconds');
 });
 autoUpdater.on('update-downloaded', (ev, info) => {
   // Wait 5 seconds, then quit and install
   // In your application, you don't need to wait 5 seconds.
   // You could call autoUpdater.quitAndInstall(); immediately
-  alert('Update downloaded; will install in 5 seconds');
   setTimeout(function () {
     autoUpdater.quitAndInstall();
   }, 5000);
