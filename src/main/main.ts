@@ -83,6 +83,12 @@ const isDevelopment =
 
 if (isDevelopment) {
   require('electron-debug')();
+  process.env.APPIMAGE = path.join(
+    __dirname,
+    'release',
+    'build',
+    `sto-radit_${app.getVersion()}_amd64.deb`
+  );
 }
 
 const installExtensions = async () => {
