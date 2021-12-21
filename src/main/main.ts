@@ -281,13 +281,13 @@ autoUpdater.on('update-downloaded', (ev, info) => {
 
 if (progressBar) {
   progressBar
-    .on('completed', function () {
+    .on('completed', () => {
       progressBar.detail = 'Task completed. Exiting...';
     })
-    .on('aborted', function (value: string) {
+    .on('aborted', (value: string) => {
       console.info(`aborted... ${value}`);
     })
-    .on('progress', function (value: number) {
+    .on('progress', (value: number) => {
       progressBar.detail = `Value ${value} out of ${
         progressBar.getOptions().maxValue
       }...`;
