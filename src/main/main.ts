@@ -9,24 +9,26 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import 'core-js/stable';
-import 'regenerator-runtime/runtime';
-import path from 'path';
 import {
   app,
   BrowserWindow,
-  shell,
-  ipcMain,
-  Notification,
   clipboard,
-  Tray,
+  dialog,
+  ipcMain,
   Menu,
   NativeImage,
-  dialog,
+  Notification,
+  shell,
+  Tray,
 } from 'electron';
-import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { autoUpdater } from 'electron-updater';
+import path from 'path';
+import 'regenerator-runtime/runtime';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+
+const ProgressBar = require('electron-progressbar');
 
 export default class AppUpdater {
   constructor() {
@@ -228,7 +230,7 @@ app
   .catch(console.log);
 
 // Auto updater events (optional)
-
+let progressBar: typeof ProgressBar | null = null;
 autoUpdater.on('update-available', (ev, info) => {
   dialog
     .showMessageBox({
@@ -244,13 +246,7 @@ autoUpdater.on('update-available', (ev, info) => {
     })
     .catch((error) => dialog.showErrorBox('Error', error));
 });
-autoUpdater.on('update-not-available', (ev, info) => {
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'No Updates',
-    message: 'No updates found.',
-  });
-});
+autoUpdater.on('update-not-available', (ev, info) => {});
 autoUpdater.on('error', (ev, err) => {
   dialog.showMessageBox({
     type: 'info',
@@ -258,24 +254,42 @@ autoUpdater.on('error', (ev, err) => {
     message: `Error, while checking for updates. ${err}`,
   });
 });
-autoUpdater.on('download-progress', (ev, progressObj) => {
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Download progress',
-    message: `Download progress, ${progressObj.percent}%`,
-  });
+autoUpdater.on('download-progress', (progressObj) => {
+  const logMessage = `Downloading ${Math.round(progressObj.percent)}%`;
+  if (progressBar === null) {
+    progressBar = new ProgressBar({
+      indeterminate: false,
+      text: 'Downloading new version...',
+      detail: 'Wait...',
+    });
+  } else {
+    progressBar.value = progressObj.percent;
+    progressBar.detail = logMessage;
+  }
 });
 autoUpdater.on('update-downloaded', (ev, info) => {
   // Wait 5 seconds, then quit and install
   // In your application, you don't need to wait 5 seconds.
   // You could call autoUpdater.quitAndInstall(); immediately
-  dialog.showMessageBox({
+  dialog.showMessageBoxSync({
     type: 'info',
     title: 'Update downloaded',
-    message:
-      'Update downloaded, application will quit for update in 5 seconds...',
+    message: 'Update downloaded, application will quit for update...',
   });
-  setTimeout(function () {
-    autoUpdater.quitAndInstall();
-  }, 5000);
+  autoUpdater.quitAndInstall();
 });
+
+if (progressBar) {
+  progressBar
+    .on('completed', function () {
+      progressBar.detail = 'Task completed. Exiting...';
+    })
+    .on('aborted', function (value: string) {
+      console.info(`aborted... ${value}`);
+    })
+    .on('progress', function (value: number) {
+      progressBar.detail = `Value ${value} out of ${
+        progressBar.getOptions().maxValue
+      }...`;
+    });
+}
