@@ -234,9 +234,7 @@ autoUpdater.on('update-available', (ev, info) => {
     .showMessageBox({
       type: 'info',
       title: 'Found Updates',
-      message: `Found updates, do you want update now? ${app.getVersion()} -> ${
-        info.version
-      }`,
+      message: `Found updates, do you want update now?`,
       buttons: ['Sure', 'No'],
     })
     .then((res) => {
