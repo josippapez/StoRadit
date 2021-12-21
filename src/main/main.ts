@@ -21,6 +21,7 @@ import {
   Tray,
   Menu,
   NativeImage,
+  dialog,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -31,9 +32,8 @@ export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
-    console.log('oaskdoaskdo');
-    autoUpdater.checkForUpdatesAndNotify();
-    console.log('aaaaaaaaaaaaaaa');
+    autoUpdater.autoDownload = false;
+    autoUpdater.checkForUpdates();
   }
 }
 
@@ -229,28 +229,54 @@ app
 
 // Auto updater events (optional)
 
-autoUpdater.on('checking-for-update', () => {
-  console.log('Checking for update...');
-});
 autoUpdater.on('update-available', (ev, info) => {
-  console.log('Update available.');
+  dialog
+    .showMessageBox({
+      type: 'info',
+      title: 'Found Updates',
+      message: `Found updates, do you want update now? ${app.getVersion()} -> ${
+        info.version
+      }`,
+      buttons: ['Sure', 'No'],
+    })
+    .then((res) => {
+      if (res.response === 0) {
+        autoUpdater.downloadUpdate();
+      }
+    })
+    .catch((error) => dialog.showErrorBox('Error', error));
 });
 autoUpdater.on('update-not-available', (ev, info) => {
-  console.log('Update not available.');
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'No Updates',
+    message: 'No updates found.',
+  });
 });
 autoUpdater.on('error', (ev, err) => {
-  console.error('Error in auto updater.');
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Error',
+    message: `Error, while checking for updates. ${err}`,
+  });
 });
 autoUpdater.on('download-progress', (ev, progressObj) => {
-  console.log('Download progress...', progressObj);
-});
-autoUpdater.on('update-downloaded', (ev, info) => {
-  console.log('Update downloaded; will install in 5 seconds');
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Download progress',
+    message: `Download progress, ${progressObj.percent}%`,
+  });
 });
 autoUpdater.on('update-downloaded', (ev, info) => {
   // Wait 5 seconds, then quit and install
   // In your application, you don't need to wait 5 seconds.
   // You could call autoUpdater.quitAndInstall(); immediately
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update downloaded',
+    message:
+      'Update downloaded, application will quit for update in 5 seconds...',
+  });
   setTimeout(function () {
     autoUpdater.quitAndInstall();
   }, 5000);

@@ -23,6 +23,7 @@ module.exports = {
       },
     ],
     'react-hooks/exhaustive-deps': 'warn',
+    'promise/always-return': 'warn',
   },
   parserOptions: {
     ecmaVersion: 2020,

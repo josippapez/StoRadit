@@ -14,8 +14,29 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
 
+  templateDefault: Electron.MenuItemConstructorOptions[] = [];
+
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
+  }
+
+  appendNewItem(itemFunc: () => void): void {
+    if (itemFunc && this.templateDefault) {
+      const options: Electron.MenuItemConstructorOptions = {
+        label: 'Update',
+        submenu: [
+          {
+            label: 'Check for Updates',
+            click: () => {
+              itemFunc();
+            },
+          },
+        ],
+      };
+      if (options) {
+        this.templateDefault.push(options);
+      }
+    }
   }
 
   buildMenu(): Menu {
@@ -38,18 +59,21 @@ export default class MenuBuilder {
   }
 
   setupDevelopmentEnvironment(): void {
-    this.mainWindow.webContents.on('context-menu', (_, props) => {
-      const { x, y } = props;
+    this.mainWindow.webContents.on(
+      'context-menu',
+      (_: any, props: { x: any; y: any }) => {
+        const { x, y } = props;
 
-      Menu.buildFromTemplate([
-        {
-          label: 'Inspect element',
-          click: () => {
-            this.mainWindow.webContents.inspectElement(x, y);
+        Menu.buildFromTemplate([
+          {
+            label: 'Inspect element',
+            click: () => {
+              this.mainWindow.webContents.inspectElement(x, y);
+            },
           },
-        },
-      ]).popup({ window: this.mainWindow });
-    });
+        ]).popup({ window: this.mainWindow });
+      }
+    );
   }
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
@@ -193,7 +217,7 @@ export default class MenuBuilder {
   }
 
   buildDefaultTemplate() {
-    const templateDefault = [
+    this.templateDefault = this.templateDefault.concat([
       {
         label: '&File',
         submenu: [
@@ -285,8 +309,8 @@ export default class MenuBuilder {
           },
         ],
       },
-    ];
+    ]);
 
-    return templateDefault;
+    return this.templateDefault;
   }
 }
