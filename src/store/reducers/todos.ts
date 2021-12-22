@@ -60,6 +60,7 @@ export interface Todo {
   name: string;
   date: string;
   text: string;
+  scheduled?: string | null;
 }
 export interface TodoState {
   todos: null | Todo[];
@@ -120,6 +121,24 @@ export const todosSlice = createSlice({
     ) => {
       state.selectedTodo = { ...action.payload };
     },
+    setScheduling: (state, action: PayloadAction<string | null>) => {
+      state.selectedTodo = {
+        ...state.selectedTodo,
+        scheduled: action.payload,
+      };
+      const todos = state.todos && [...state.todos];
+      if (todos) {
+        state.todos = todos?.map((todo) =>
+          todo.id === state.selectedTodo?.id
+            ? {
+                ...todo,
+                scheduled: action.payload,
+              }
+            : todo
+        );
+      }
+      displaySuccess();
+    },
     addDoneTodo: (state, action: PayloadAction<Todo>) => {
       const doneTodos = state.doneTodos && [...state.doneTodos];
       const oldTodoList = state.todos ? [...state.todos] : [];
@@ -152,6 +171,7 @@ export const {
   removeTodo,
   addDoneTodo,
   removeDoneTodo,
+  setScheduling,
 } = todosSlice.actions;
 
 export default todosSlice.reducer;

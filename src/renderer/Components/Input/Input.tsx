@@ -1,10 +1,16 @@
+import AdapterLuxon from '@mui/lab/AdapterLuxon';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { createTheme, ThemeProvider } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import { DateTime } from 'luxon';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Datetime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import Editor from 'rich-markdown-editor';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   addTodo,
+  setScheduling,
   setSelectedTodo,
   Todo,
   updateTodo,
@@ -28,15 +34,16 @@ const Input = (props: Props): JSX.Element | null => {
   const [todo, setTodo] = useState<Todo | Partial<Todo> | null>(null);
 
   const value: { current: undefined | string } = useRef();
-  const dateTime: { current: string | undefined } = useRef(
-    new Date().toLocaleString('hr-HR', {
-      timeStyle: 'short',
-      dateStyle: 'short',
-    })
-  );
+  const [dateTime, setDateTime] = useState<DateTime | null>(DateTime.now());
 
   useEffect(() => {
     if (selectedTodo) {
+      if (
+        selectedTodo.scheduled &&
+        DateTime.fromISO(selectedTodo.scheduled) < DateTime.now()
+      ) {
+        dispatch(setScheduling(null));
+      }
       value.current = selectedTodo?.text;
       setTodo(selectedTodo);
     }
@@ -122,7 +129,7 @@ const Input = (props: Props): JSX.Element | null => {
           }}
         />
         <div className={style.schedule}>
-          {!showScheduling && selectedTodo.id && (
+          {!showScheduling && selectedTodo.id && !selectedTodo.scheduled && (
             <button
               type="button"
               className={style['schedule-button']}
@@ -133,26 +140,85 @@ const Input = (props: Props): JSX.Element | null => {
           )}
           {showScheduling && (
             <>
-              <Datetime
-                className={style['schedule-input']}
-                locale="hr"
-                initialValue={new Date()}
-                onChange={(e) => {
-                  dateTime.current = e.toString();
-                }}
-                dateFormat="DD.MM.yyyy."
-                timeFormat="hh:mm"
-              />
+              <ThemeProvider
+                theme={createTheme(
+                  createTheme({
+                    palette: {
+                      primary: {
+                        main: '#00b0ff',
+                      },
+                      text: {
+                        primary: 'var(--main-text)',
+                      },
+                      divider: '#fff',
+                    },
+                  }),
+                  {
+                    components: {
+                      MuiSvgIcon: {
+                        styleOverrides: {
+                          root: {
+                            fill: 'var(--main-text)',
+                          },
+                        },
+                      },
+                      MuiTextField: {
+                        styleOverrides: {
+                          root: {
+                            backgroundColor: 'var(--input-background)',
+                            borderRadius: '4px',
+                            border: '1px solid transparent',
+                            '&:hover': {
+                              border: '1px solid #00b0ff',
+                            },
+                          },
+                        },
+                      },
+                      MuiOutlinedInput: {
+                        styleOverrides: {
+                          notchedOutline: {
+                            borderColor: 'transparent',
+                          },
+                        },
+                      },
+                    },
+                  }
+                )}
+              >
+                <LocalizationProvider locale="hr" dateAdapter={AdapterLuxon}>
+                  <DateTimePicker
+                    renderInput={(params: JSX.IntrinsicAttributes) => (
+                      <TextField {...params} />
+                    )}
+                    views={[
+                      'year',
+                      'month',
+                      'day',
+                      'hours',
+                      'minutes',
+                      'seconds',
+                    ]}
+                    autoFocus
+                    inputFormat="dd.MM.yyyy HH:mm:ss"
+                    ampm={false}
+                    ampmInClock={false}
+                    value={dateTime}
+                    onChange={(newValue) => {
+                      setDateTime(newValue);
+                    }}
+                    minDate={DateTime.now()}
+                  />
+                </LocalizationProvider>
+              </ThemeProvider>
               <button
                 className={style['schedule-button']}
                 type="button"
                 aria-label="hidden"
                 onClick={() => {
-                  if (dateTime.current) {
-                    electron.scheduleAPI.schedule(
-                      dateTime.current.toString(),
-                      todo
-                    );
+                  if (dateTime) {
+                    dispatch(setScheduling(dateTime.toString()));
+                    electron.scheduleAPI.schedule(dateTime.toString(), todo);
+                    setShowScheduling(false);
                   }
                 }}
               >

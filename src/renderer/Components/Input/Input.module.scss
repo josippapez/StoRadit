@@ -8,30 +8,10 @@
     margin: 20px 0;
     display: flex;
     justify-content: end;
-    .schedule-input {
-      display: block;
-      position: relative;
-      margin-right: 40px;
-      input {
-        width: 100%;
-        height: 40px;
-        border: none;
-        border-radius: 4px;
-        padding: 0 10px;
-        font-size: 16px;
-        font-family: 'Regular';
-        font-weight: bold;
-        line-height: 1.5;
-        color: var(--main-text);
-        background-color: var(--input-background);
-        &:focus {
-          outline: none;
-        }
-      }
-    }
     .schedule-button {
+      margin-left: 20px;
       cursor: pointer;
-      height: 42px;
+      height: 56px;
       border: none;
       border-radius: 4px;
       padding: 0 10px;

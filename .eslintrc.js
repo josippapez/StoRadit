@@ -24,6 +24,7 @@ module.exports = {
     ],
     'react-hooks/exhaustive-deps': 'warn',
     'promise/always-return': 'warn',
+    'react/jsx-props-no-spreading': 'warn',
   },
   parserOptions: {
     ecmaVersion: 2020,
