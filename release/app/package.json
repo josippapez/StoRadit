@@ -1,6 +1,6 @@
 {
   "name": "sto-radit",
-  "version": "1.0.3.1",
+  "version": "1.0.4",
   "description": "Minimal Todo list/notes taking app",
   "main": "./dist/main/main.js",
   "author": {
