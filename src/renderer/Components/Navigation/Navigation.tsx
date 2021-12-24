@@ -61,7 +61,7 @@ const Navigation = (props: Props): JSX.Element => {
                   name: `${new Date().toLocaleDateString(
                     'hr'
                   )} ${new Date().toLocaleTimeString('hr')}`,
-                  text: ' ',
+                  text: '',
                 })
               )
             }

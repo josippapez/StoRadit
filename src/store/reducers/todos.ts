@@ -90,12 +90,14 @@ export const todosSlice = createSlice({
               : todo
           )
         : null;
+      todosSlice.caseReducers.setSelectedTodo(state, action);
       displaySuccess();
     },
     addTodo: (state, action: PayloadAction<Todo>) => {
       const todos = state.todos && [...state.todos];
       if (todos) {
         state.todos = todos?.concat(action.payload);
+        todosSlice.caseReducers.setSelectedTodo(state, action);
         displaySuccess();
       }
     },

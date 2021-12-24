@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   addTodo,
   setScheduling,
-  setSelectedTodo,
   Todo,
   updateTodo,
 } from '../../../store/reducers/todos';
@@ -29,7 +28,6 @@ const Input = (props: Props): JSX.Element | null => {
     (state) => state.todos.selectedTodo
   );
 
-  const [saving, setSaving] = useState(false);
   const [showScheduling, setShowScheduling] = useState(false);
   const [todo, setTodo] = useState<Todo | Partial<Todo> | null>(null);
 
@@ -44,12 +42,14 @@ const Input = (props: Props): JSX.Element | null => {
       ) {
         dispatch(setScheduling(null));
       }
-      value.current = selectedTodo?.text;
-      setTodo(selectedTodo);
+      if (!todo || (todo && todo.id !== selectedTodo.id)) {
+        setTodo(selectedTodo);
+        value.current = selectedTodo?.text;
+      }
     }
     if (!selectedTodo) {
       setTodo(null);
-      value.current = ' ';
+      value.current = '';
     }
   }, [selectedTodo]);
 
@@ -63,7 +63,6 @@ const Input = (props: Props): JSX.Element | null => {
             text: value.current,
           })
         );
-        dispatch(setSelectedTodo({ ...todo, text: value.current }));
       } else {
         const newTodo: Todo = {
           date: new Date().toLocaleDateString('hr'),
@@ -72,24 +71,12 @@ const Input = (props: Props): JSX.Element | null => {
           id: crypto.getRandomValues(new Uint32Array(1))[0],
         };
         dispatch(addTodo(newTodo));
-        dispatch(setSelectedTodo(newTodo));
       }
     }
   }, [dispatch, todo]);
 
-  useEffect(() => {
-    if (saving) {
-      setSaving(false);
-      saveTodo();
-    }
-  }, [saveTodo, saving]);
-
-  useEffect(() => {
-    const saveListenerFunction = (event: {
-      key: string;
-      ctrlKey: boolean;
-      preventDefault: () => void;
-    }) => {
+  const saveListenerFunction = useCallback(
+    (event: { key: string; ctrlKey: boolean; preventDefault: () => void }) => {
       const charCode = event.key.toLowerCase();
       if (event.ctrlKey && charCode === 's') {
         event.preventDefault();
@@ -100,17 +87,20 @@ const Input = (props: Props): JSX.Element | null => {
           JSON.stringify({ ...todo, text: value.current }) !==
             JSON.stringify(selectedTodo)
         ) {
-          setSaving(true);
+          saveTodo();
         }
       }
-    };
+    },
+    [todo]
+  );
 
+  useEffect(() => {
     window.addEventListener('keydown', saveListenerFunction);
     return () => {
       setShowScheduling(false);
       window.removeEventListener('keydown', saveListenerFunction);
     };
-  }, [selectedTodo, todo]);
+  }, [saveListenerFunction]);
 
   const setValue = (getValue: () => string) => {
     value.current = getValue();
@@ -118,7 +108,7 @@ const Input = (props: Props): JSX.Element | null => {
 
   return (
     selectedTodo && (
-      <div className={style['markdown-input']} key={todo?.id}>
+      <div className={style['markdown-input']} key={value.current}>
         <input
           id="nameInput"
           className={style['name-input']}
@@ -227,15 +217,14 @@ const Input = (props: Props): JSX.Element | null => {
             </>
           )}
         </div>
-        {value.current && (
-          <Editor
-            // eslint-disable-next-line no-nested-ternary
-            theme={theme === 'dark' ? dark : theme === 'light' ? light : color1}
-            value={value.current}
-            autoFocus
-            onChange={setValue}
-          />
-        )}
+        <Editor
+          defaultValue={value.current}
+          // eslint-disable-next-line no-nested-ternary
+          theme={theme === 'dark' ? dark : theme === 'light' ? light : color1}
+          value={value.current}
+          autoFocus
+          onChange={setValue}
+        />
       </div>
     )
   );
