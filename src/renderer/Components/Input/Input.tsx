@@ -107,6 +107,7 @@ const Input = (props: Props): JSX.Element | null => {
   };
 
   return (
+    todo &&
     selectedTodo && (
       <div className={style['markdown-input']} key={value.current}>
         <input
@@ -212,7 +213,7 @@ const Input = (props: Props): JSX.Element | null => {
                   }
                 }}
               >
-                Save
+                Spremi rok završetka
               </button>
             </>
           )}

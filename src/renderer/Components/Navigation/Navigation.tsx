@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   addDoneTodo,
@@ -16,6 +16,8 @@ const Navigation = (props: Props): JSX.Element => {
   const { theme } = props;
   const todos = useAppSelector((state) => state.todos);
   const [selectedTab, setSelectedTab] = useState('active');
+  const [searchText, setSearchText] = useState('');
+  const searchInputRef = useRef(null);
 
   return (
     <div className={style.navigation}>
@@ -29,6 +31,11 @@ const Navigation = (props: Props): JSX.Element => {
             }`}
             onClick={() => {
               setSelectedTab('active');
+              setSearchText('');
+              if (searchInputRef.current) {
+                const target = searchInputRef.current as HTMLInputElement;
+                target.value = '';
+              }
             }}
           >
             Aktivno ({todos?.todos?.length})
@@ -41,10 +48,29 @@ const Navigation = (props: Props): JSX.Element => {
             }`}
             onClick={() => {
               setSelectedTab('done');
+              setSearchText('');
+              if (searchInputRef.current) {
+                const target = searchInputRef.current as HTMLInputElement;
+                target.value = '';
+              }
             }}
           >
             Riješeno ({todos?.doneTodos?.length})
           </div>
+        </div>
+        <div className={style.search}>
+          <input
+            ref={searchInputRef}
+            type="text"
+            placeholder="Pretraživanje po nazivu i sadržaju"
+            className={style.searchInput}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const target = e.target as HTMLInputElement;
+                setSearchText(target.value);
+              }
+            }}
+          />
         </div>
         {selectedTab === 'active' && (
           <button
@@ -70,7 +96,16 @@ const Navigation = (props: Props): JSX.Element => {
       </div>
       <div className={style.list}>
         {selectedTab === 'active' &&
-          todos?.todos?.map((todo) => (
+          todos &&
+          todos.todos &&
+          (searchText
+            ? todos.todos.filter(
+                (todo) =>
+                  todo.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                  todo.text.toLowerCase().includes(searchText.toLowerCase())
+              )
+            : todos.todos
+          ).map((todo) => (
             <div className={style.item} key={todo.id}>
               <div
                 aria-hidden="true"
@@ -106,7 +141,16 @@ const Navigation = (props: Props): JSX.Element => {
             </div>
           ))}
         {selectedTab === 'done' &&
-          todos?.doneTodos?.map((todo) => (
+          todos &&
+          todos.doneTodos &&
+          (searchText
+            ? todos.doneTodos.filter(
+                (todo) =>
+                  todo.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                  todo.text.toLowerCase().includes(searchText.toLowerCase())
+              )
+            : todos.doneTodos
+          ).map((todo) => (
             <div className={style.item} key={todo.id}>
               <div
                 aria-hidden="true"

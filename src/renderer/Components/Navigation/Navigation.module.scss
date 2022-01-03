@@ -9,6 +9,22 @@
   user-select: none;
   .topTab {
     margin-bottom: 10px;
+    .search {
+      width: 100%;
+      display: flex;
+      margin-top: 10px;
+      .searchInput {
+        height: 35px;
+        width: 100%;
+        padding: 0 10px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        font-size: 16px;
+        outline: none;
+        background-color: var(--card-background);
+        color: var(--main-text);
+      }
+    }
     .menu {
       display: flex;
       width: 100%;
