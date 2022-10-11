@@ -107,6 +107,7 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
+  app.setName('StoRadit');
   app.setAppUserModelId('StoRadit');
   if (isDevelopment) {
     await installExtensions();
@@ -120,7 +121,7 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
-  icon = getAssetPath('icon.png');
+  icon = getAssetPath('newIcon.png');
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -128,7 +129,7 @@ const createWindow = async () => {
     minHeight: 500,
     height: 1024,
     minWidth: 700,
-    icon: getAssetPath('icon.png'),
+    icon: getAssetPath('newIcon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
